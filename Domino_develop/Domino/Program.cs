@@ -91,11 +91,11 @@ namespace Domino
 
                 int checkChoice = CheckAndMakeChoicePlayer(numberOfPlayer, choice);
                 //Проверки выбора игрока (1 - всё ок, переход хода, 0 - неверный ответ, переигровка хода, -1 - рестарт)
-                if (checkChoice == 0)
+                if (checkChoice == 1)
                 {
                     return false;
                 }
-                else if (checkChoice == 1)
+                else if (checkChoice == 0)
                 {
                     continue;
                 }
@@ -129,7 +129,7 @@ namespace Domino
                 MakeIndentation(30);
                 return 1;
             }
-            else if (choice == "передать" && Bones.Deck.Count > 0)
+            else if (choice == "передаю" && Bones.Deck.Count > 0)
             {
                 Console.WriteLine("В колоде пока ещё имеются карты!");
                 return 0;
