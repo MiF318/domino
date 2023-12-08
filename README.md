@@ -1,3 +1,3 @@
-# domino
+# Console domino game
 __________
-## [Скачать архив с игрой](https://github.com/MiF318/domino/raw/main/Domino_1.0.rar)
+## [Download last version](https://github.com/MiF318/domino/raw/main/Domino_1.0.rar)
