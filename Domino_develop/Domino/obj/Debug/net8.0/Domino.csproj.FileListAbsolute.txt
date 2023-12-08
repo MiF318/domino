@@ -15,3 +15,20 @@ D:\Алексей\C-sharp\Тема 12 - ООП\Семинарские\Domino\obj
 D:\Алексей\C-sharp\Тема 12 - ООП\Семинарские\Domino\obj\Debug\net8.0\ref\Domino.dll
 D:\Алексей\C-sharp\Тема 12 - ООП\Семинарские\Domino\obj\Debug\net8.0\Domino.csproj.AssemblyReference.cache
 D:\Алексей\C-sharp\Тема 12 - ООП\Семинарские\Domino\obj\Debug\net8.0\Domino.csproj.CopyComplete
+D:\Алексей\C-sharp\domino\Domino_develop\Domino\obj\Debug\net8.0\Domino.csproj.AssemblyReference.cache
+D:\Алексей\C-sharp\domino\Domino_develop\Domino\obj\Debug\net8.0\Domino.GeneratedMSBuildEditorConfig.editorconfig
+D:\Алексей\C-sharp\domino\Domino_develop\Domino\obj\Debug\net8.0\Domino.AssemblyInfoInputs.cache
+D:\Алексей\C-sharp\domino\Domino_develop\Domino\obj\Debug\net8.0\Domino.AssemblyInfo.cs
+D:\Алексей\C-sharp\domino\Domino_develop\Domino\obj\Debug\net8.0\Domino.csproj.CoreCompileInputs.cache
+D:\Алексей\C-sharp\domino\Domino_develop\Domino\obj\Debug\net8.0\Domino.sourcelink.json
+D:\Алексей\C-sharp\domino\Domino_develop\Domino\obj\Debug\net8.0\Domino.dll
+D:\Алексей\C-sharp\domino\Domino_develop\Domino\obj\Debug\net8.0\refint\Domino.dll
+D:\Алексей\C-sharp\domino\Domino_develop\Domino\obj\Debug\net8.0\Domino.pdb
+D:\Алексей\C-sharp\domino\Domino_develop\Domino\bin\Debug\net8.0\Domino.exe
+D:\Алексей\C-sharp\domino\Domino_develop\Domino\bin\Debug\net8.0\Domino.deps.json
+D:\Алексей\C-sharp\domino\Domino_develop\Domino\bin\Debug\net8.0\Domino.runtimeconfig.json
+D:\Алексей\C-sharp\domino\Domino_develop\Domino\bin\Debug\net8.0\Domino.dll
+D:\Алексей\C-sharp\domino\Domino_develop\Domino\bin\Debug\net8.0\Domino.pdb
+D:\Алексей\C-sharp\domino\Domino_develop\Domino\obj\Debug\net8.0\Domino.csproj.CopyComplete
+D:\Алексей\C-sharp\domino\Domino_develop\Domino\obj\Debug\net8.0\Domino.genruntimeconfig.cache
+D:\Алексей\C-sharp\domino\Domino_develop\Domino\obj\Debug\net8.0\ref\Domino.dll

@@ -4,10 +4,12 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace DominoLib
 {
+    //Игровое поле
     public static class Board
     {
         public static List<int[]> BonesOnBoard = new List<int[]>();
 
+        //Печатает игровое поле
         public static void PrintBoard()
         {
             for (int i = 0; i < BonesOnBoard.Count; i++)
@@ -15,41 +17,44 @@ namespace DominoLib
                 Console.Write("|" + BonesOnBoard[i][0] + "; " + BonesOnBoard[i][1] + "|   ");
             }
         }
-
-        public static void AddBoneOnBoard(int[] bone, bool inEnd)
-        {
-            if (inEnd)
-                BonesOnBoard.Add(bone);
-            else
-                BonesOnBoard.Insert(0, bone);
-        }
     }
 
+    //В нём находится колода и производятся действия с костяшками
     public static class Bones
     {
         public static List<int[]> Deck = new List<int[]>();
-        public static int CountOfBones = 7;
+        public static int StartCountOfBones = 7;
 
+        //Добавляет костяшку игроку и удаляет её из колоды
         public static void TakeBone(int player)
         {
             Random rnd = new Random();
             var bone = Deck[rnd.Next(0, Deck.Count)];
-            Players.players[player].AddBone(bone);
+            Players.players[player].OnHand.Add(bone);
             Deck.Remove(bone);
         }
 
+        //Добавляет костяшку на поле
+        public static void AddBoneOnBoard(int[] bone, bool inEnd)
+        {
+            if (inEnd)
+                Board.BonesOnBoard.Add(bone);
+            else
+                Board.BonesOnBoard.Insert(0, bone);
+        }
+
+        //Пересоздаёт колоду
         public static void RefreshDeck()
         {
-
             for (int i = 0; i < Deck.Count; i++)
             {
                 Deck.Clear();
             }
 
-            //Создаётся колода разных интов[2] в количестве 28
-            for (int i = 0; i < 7; i++)
+            //Создаётся колода полностью различных int[2] в количестве: (double)((StartCountOfBones^2 + StartCountOfBones) / 2)
+            for (int i = 0; i < StartCountOfBones; i++)
             {
-                for (int j = i; j < 7; j++)
+                for (int j = i; j < StartCountOfBones; j++)
                 {
                     var bone = new int[] { i, j };
                     Deck.Add(bone);
@@ -58,16 +63,13 @@ namespace DominoLib
         }
     }
 
+    //Конструктор игрока
     public class Player
     {
         public string Name = "";
         public List<int[]> OnHand = new List<int[]>();
 
-        public void AddBone(int[] bone)
-        {
-            OnHand.Add(bone);
-        }
-
+        //Печатает все костяшки игрока
         public void PrintPlayerBones()
         {
             for (int i = 0; i < OnHand.Count; i++)
@@ -75,12 +77,15 @@ namespace DominoLib
         }
     }
 
+    //Содержит всех игроков
     public static class Players
     {
         public static List<Player> players = new List<Player>();
 
+        //Создаёт определённое количество игроков
         public static void CreatePlayers(int countOfPlayers)
         {
+            players.Clear();
             for (int i = 0; i < countOfPlayers; i++)
             {
                 players.Add(new Player());
