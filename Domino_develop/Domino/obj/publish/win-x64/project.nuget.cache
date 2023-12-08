@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "XKK4Fk9wZsAGBrJNfkq+QNnRmrIoZY3Jkmcl00b35e3aGF+pnOXJSGoPVw1aQVNxLGrBr8XRxNTmO0qq+lkgMQ==",
+  "success": true,
+  "projectFilePath": "D:\\Алексей\\C-sharp\\domino\\Domino_develop\\Domino\\Domino.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\ADMIN\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x64\\8.0.0\\microsoft.netcore.app.runtime.win-x64.8.0.0.nupkg.sha512",
+    "C:\\Users\\ADMIN\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x64\\8.0.0\\microsoft.windowsdesktop.app.runtime.win-x64.8.0.0.nupkg.sha512",
+    "C:\\Users\\ADMIN\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x64\\8.0.0\\microsoft.aspnetcore.app.runtime.win-x64.8.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

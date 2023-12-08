@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Алексей\\C-sharp\\Тема 12 - ООП\\Семинарские\\Domino\\Domino.csproj",
+      "projectUniqueName": "D:\\Алексей\\C-sharp\\domino\\Domino_develop\\Domino\\Domino.csproj",
       "projectName": "Domino",
-      "projectPath": "D:\\Алексей\\C-sharp\\Тема 12 - ООП\\Семинарские\\Domino\\Domino.csproj",
+      "projectPath": "D:\\Алексей\\C-sharp\\domino\\Domino_develop\\Domino\\Domino.csproj",
       "packagesPath": "C:\\Users\\ADMIN\\.nuget\\packages\\",
-      "outputPath": "D:\\Алексей\\C-sharp\\Тема 12 - ООП\\Семинарские\\Domino\\obj\\",
+      "outputPath": "D:\\Алексей\\C-sharp\\domino\\Domino_develop\\Domino\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
