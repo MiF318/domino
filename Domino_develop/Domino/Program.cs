@@ -9,41 +9,94 @@ namespace Domino
     internal class Program
     {
         static List<string> names = new List<string>();
-        //Вспомогательные методы:
 
-        //Вспомогательный метод, делающий отступ
-        static void MakeIndentation(int indentation)
+
+//Игровые методы
+
+        //ОСНОВНОЙ МЕТОД
+        static void Main(string[] args)
         {
-            for (int i = 0; i < indentation; i++)
+            string statusGame = "first game";
+            while (true)
             {
-                Console.WriteLine();
+                //Начало игры
+                StartGame(statusGame);
+
+                //Возвращает "restart" в случае выбора игроком рестарта, .Name победителя, ошибку
+                string result = Game();
+
+                //На осноове result возвращает: "end" - в случае, когда Game() закончилась выбором победителя, "restart" - игрок выбрал рестарт, "start" - в случае ошибок (полная переигровка)
+                statusGame = CheckErrorsAndGetStatusGameEnd(result);
+                if (statusGame == "restart")
+                    continue;
+                else if (statusGame == "start")
+                    continue;
+
+                else if (statusGame == "end")
+                {
+                    //Возвращает выбор пользователя (рестарт или нет?)
+                    statusGame = FinishGame(result);
+
+                    if (statusGame == "end")
+                    {
+                        MakeIndentation(30);
+                        Console.WriteLine("Конец");
+                        break;
+                    }
+                    else
+                        continue;
+
+                    Console.WriteLine("Нажмите любую клавишу");
+                    Console.ReadKey();
+                }
+            }
+            //Доп инфа в самом конце
+            MakeIndentation(10);
+            Console.WriteLine("Склипал за 2 ночи. Поначалу просто делал классы по заданию, но потом для теста и чтобы пощупать различие статических классов, методов и тд от нестатических, " +
+                "\n начал создавать игроков, выводить их на консоль и как-то так получилось, что структура и идея реализации, пусть и простенького, но полноценного консольного домино " +
+                "\n сами собой пришли в голову)" +
+                "\n Для выхода нажмите любую клавишу");
+            Console.ReadKey();
+        }
+
+
+//Начало игры
+        static void StartGame(string statusGame)
+        {
+            //Рефреш игровой информации (деки, доски и костяшек)
+            Bones.RefreshDeck();
+
+            if (statusGame == "start" || statusGame == "restart")
+            {
+                Board.BonesOnBoard.Clear();
+                for (int i = 0; i < Players.players.Count; i++)
+                {
+                    Players.players[i].OnHand.Clear();
+                }
+            }
+
+            //Создание игроков
+            if (statusGame == "start" || statusGame == "first game")
+            {
+                names.Clear();
+                GetPlayers();
+                Players.CreatePlayers(names.Count);
+            }
+
+            //Раздача костяшек
+            for (int player = 0; player < Players.players.Count; player++)
+            {
+                Players.players[player].Name = names[player];
+
+                for (int countStartBones = 0; countStartBones < Bones.StartCountOfBones; countStartBones++)
+                {
+                    Bones.TakeBone(player);
+                }
             }
         }
 
-        //Вспомогательный метод, который выводит на экран стилизованную текущую информацию об игре
-        static void PrintGameInformation()
-        {
-            Console.WriteLine();
-            Console.WriteLine("Доска:");
-            Board.PrintBoard();
-            Console.WriteLine();
-            Console.WriteLine();
-        }
-
-        //Вспомогательный метод, который выводит на экран информацию о заданном игроке
-        static void PrintPlayerInformation(int numberOfPlayer)
-        {
-            Console.WriteLine();
-            Console.WriteLine("Ваши костяшки:");
-            Players.players[numberOfPlayer].PrintPlayerBones();
-            Console.WriteLine();
-        }
-
-
-        //Вспомогательные игровые методы:
-
         //Получает имена и количество игроков
-        static List<string> GetPlayers()
+        static void GetPlayers()
         {
             int count = 0;
             while (count < Bones.Deck.Count / Bones.StartCountOfBones)
@@ -66,14 +119,51 @@ namespace Domino
                     count++;
                 }
             }
-            return names;
         }
 
 
-        //Группа методов, отвеячающих за ход игрока
+//Методы середины игры
+
+        //Середина игры
+        static string Game()
+        {
+            //Придумал идею с кодом, мне понравилась, решил оставить)
+            Random codeGenerator = new Random();
+            int code = codeGenerator.Next();
+
+            //Статус того, что игра идёт
+            string inGameStatus = "In game stage " + code.ToString();
+            string statusGame = inGameStatus;
+
+            while (true)
+            {
+                for (int numberOfPlayer = 0; numberOfPlayer < Players.players.Count; numberOfPlayer++)
+                {
+                    string resultPlayerStep = MakePlayerStep(numberOfPlayer);
+
+                    if (resultPlayerStep == "next")
+                    {
+                        //Проверки на выигрыш (номер победителя; -2 - победителя пока нет)
+                        statusGame = CheckWin(numberOfPlayer, statusGame);
+                        if (statusGame != inGameStatus)
+                            return statusGame;
+
+                        continue;
+                    }
+
+                    else if (resultPlayerStep == "restart")
+                        return "restart";
+                    else if (resultPlayerStep == "start")
+                        return "start";
+                }
+            }
+            return "error";
+        }
+
+    //Группа методов, отвеячающих за ход игрока
 
         //Ход заданного игрока
-        static bool MakePlayerStep(int numberOfPlayer)
+        static string MakePlayerStep(int numberOfPlayer)
         {
             Console.WriteLine("Ходит " + Players.players[numberOfPlayer].Name + ", для продолжения нажмите любую клавишу");
             Console.ReadKey();
@@ -84,35 +174,32 @@ namespace Domino
             //Добиваемся от игрока валидного ответа
             while (true)
             {
+                Console.WriteLine();
                 Console.WriteLine("Введите номер костяшки");
-                Console.WriteLine("Или введите одну из следующих команд: \"беру\" - взять одну костяшку из колоды (осталось " + Bones.Deck.Count + "); "
-                    + ((Bones.Deck.Count == 0) ? "\"передаю\" - передать ход" : "") + "\"рестарт\" - перезапуск игры");
+                Console.WriteLine("Или введите одну из следующих команд: \"беру\" (б) - взять одну костяшку из колоды (осталось " + Bones.Deck.Count + "); ");
+                Console.WriteLine(((Bones.Deck.Count == 0) ? "\"передаю\" (п) - передать ход" : "") + "\n" 
+                    + "\"рестарт\" - перезапуск игры для тех же игроков, \"новая игра\" - перезапуск игры для новых игроков");
                 string choice = Console.ReadLine();
 
-                int checkChoice = CheckAndMakeChoicePlayer(numberOfPlayer, choice);
-                //Проверки выбора игрока (1 - всё ок, переход хода, 0 - неверный ответ, переигровка хода, -1 - рестарт)
-                if (checkChoice == 1)
-                {
-                    return false;
-                }
-                else if (checkChoice == 0)
-                {
+                //Проверки выбора игрока (next - всё ок, переход хода, again - неверный ответ, переигровка хода, restart - рестарт)
+                string resultCheckChoice = CheckAndMakeChoicePlayer(numberOfPlayer, choice);
+
+                if (resultCheckChoice == "again")
                     continue;
-                }
-                else
-                    return true;
+
+                return resultCheckChoice;
             }
         }
 
-        //Проверяет валидность выбора и совершает его (0 - повтор хода, 1 - передать ход, -1 - рестарт)
-        static int CheckAndMakeChoicePlayer(int numberOfPlayer, string choice)
+        //Проверяет валидность выбора и совершает его (again - повтор хода, next - передать ход, restert - рестарт)
+        static string CheckAndMakeChoicePlayer(int numberOfPlayer, string choice)
         {
-            if (choice == "беру")
+            if (choice == "беру" || choice == "б")
             {
                 if (Bones.Deck.Count == 0)
                 {
                     Console.WriteLine("Увы, но колода пуста");
-                    return 0;
+                    return "again";
                 }
 
                 Bones.TakeBone(numberOfPlayer);
@@ -121,41 +208,86 @@ namespace Domino
                 PrintGameInformation();
                 PrintPlayerInformation(numberOfPlayer);
 
-                return 0;
+                return "again";
             }
 
-            else if (choice == "передаю" && Bones.Deck.Count == 0)
+            else if ((choice == "передаю" || choice == "п") && Bones.Deck.Count == 0)
             {
                 MakeIndentation(30);
-                return 1;
+                return "next";
             }
-            else if (choice == "передаю" && Bones.Deck.Count > 0)
+            else if ((choice == "передаю" || choice == "п") && Bones.Deck.Count > 0)
             {
                 Console.WriteLine("В колоде пока ещё имеются карты!");
-                return 0;
+                return "again";
             }
             else if (choice == "рестарт")
             {
-                return -1;
+                return "restart";
             }
-
-            // P.S. Здесь тестами ещё не покрыл)
-
-            //Если число, то работаем с выбранной костяшкой
-            else
+            else if (choice == "новая игра")
             {
-                var bone = new int[2];
-                bone = Players.players[numberOfPlayer].OnHand[int.Parse(choice) - 1];
-                bool result = CheckValidStep(bone, numberOfPlayer, true);
-
-                if (result)
-                {
-                    PrintPassingTurn(numberOfPlayer);
-                    return 1;
-                }
-                else
-                    return 0;
+                return "start";
             }
+
+            //Если есть исключения, возвращает "again"
+            if (CheckExceptions(numberOfPlayer, choice))
+                return "again";
+
+            int choiceBone = int.Parse(choice);
+
+            //Проверить возможность и поставить на доску выбранную костяшку. Возвращает сообщение о результате
+            return CheckAndPutChoiceBone(numberOfPlayer, choiceBone);
+        }
+
+        //Проверка на исключения
+        static bool CheckExceptions(int numberOfPlayer, string choice)
+        {
+            int choiceBone;
+
+            //Проверка на число, иначе сообщение об ошибке
+            if (!int.TryParse(choice, out choiceBone))
+            {
+                PrintExceptionMessage(0);
+                return true;
+            }
+
+            //Если число в правильном диапазоне, то работаем с выбранной костяшкой, иначе сообщение об ошибке
+            choiceBone = int.Parse(choice);
+            if (!(choiceBone > 0 && choiceBone < Players.players[numberOfPlayer].OnHand.Count + 1))
+            {
+                PrintExceptionMessage(1);
+                return true;
+            }
+
+            return false;
+        }
+
+        //Сообщения об разных исключениях
+        static void PrintExceptionMessage(int numberException)
+        {
+            Console.WriteLine();
+            if (numberException == 0)
+                Console.WriteLine("Вы ошиблись вводом, повторите Ваш ответ, пожалуйста");
+            else if (numberException == 1)
+                Console.WriteLine("Вы ошиблись, такой костяшки у Вас нет, повторите Ваш ответ, пожалуйста");
+            Console.WriteLine();
+        }
+
+        //Отрабатывает на основе выбора и возвращает сообщение об успехе
+        static string CheckAndPutChoiceBone(int numberOfPlayer, int choiceBone)
+        {
+            var bone = new int[2];
+            bone = Players.players[numberOfPlayer].OnHand[choiceBone - 1];
+            bool stepIsValid = CheckValidStep(bone, numberOfPlayer, true);
+
+            if (stepIsValid)
+            {
+                PrintPassingTurn(numberOfPlayer);
+                return "next";
+            }
+            else
+                return "again";
         }
 
         //Проверяет валидность выбора костяшки и в случае успеха выкидывает её на доску
@@ -234,16 +366,13 @@ namespace Domino
             MakeIndentation(30);
         }
 
-
-        //Методы конца партии
-
         //Проверяет, выиграл ли игрок. Возвращает: номер игрока, если выйгрыш засчитан; -2 - выигрыш не засчитан (ходы ещё есть)
-        static int CheckWin(int numberOfPlayer)
+        static string CheckWin(int numberOfPlayer, string statusGame)
         {
             bool gameFinished = false;
             if (Players.players[numberOfPlayer].OnHand.Count == 0)
             {
-                return numberOfPlayer;
+                return Players.players[numberOfPlayer].Name;
             }
 
             else if (Bones.Deck.Count == 0)
@@ -267,146 +396,96 @@ namespace Domino
                 }
                 if (gameFinished)
                 {
-                    return winner[0];
+                    return Players.players[winner[0]].Name;
                 }
             }
-            return -2;
-        }
-
-        //Проверяет возможность разных ошибок и возвращает статус игры
-        static bool CheckErrorsAndGetStatusGameAnd(int result)
-        {
-            if (result == -3)
-            {
-                Console.WriteLine("Возникла непредвиденная ошибка 2, игра перезапускается");
-                MakeIndentation(5);
-                return false;
-            }
-            else if (result == -1)
-            {
-                Console.WriteLine("Игра перезапускается");
-                MakeIndentation(5);
-                return false;
-            }
-            else if (result == -2)
-            {
-                Console.WriteLine("Возникла непредвиденная ошибка 1, игра перезапускается");
-                MakeIndentation(5);
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            return statusGame;
         }
 
 
-        //Игровые методы
-
-        //Начало игры
-        static void StartGame(int result)
-        {
-            //Рефреш игровой информации (деки, доски и костяшек)
-            Bones.RefreshDeck();
-            Board.BonesOnBoard.Clear();
-            for (int i = 0; i < Players.players.Count; i++)
-            {
-                Players.players[i].OnHand.Clear();
-            }
-
-            //Создание игроков
-            if (result != -1)
-            {
-                var names = GetPlayers();
-                Players.CreatePlayers(names.Count);
-            }
-
-            //Раздача костяшек
-            for (int player = 0; player < Players.players.Count; player++)
-            {
-                Players.players[player].Name = names[player];
-
-                for (int countStartBones = 0; countStartBones < Bones.StartCountOfBones; countStartBones++)
-                {
-                    Bones.TakeBone(player);
-                }
-            }
-        }
-
-        static int Game()
-        {
-            int result = -2;
-
-            while (true)
-            {
-                for (int numberOfPlayer = 0; numberOfPlayer < Players.players.Count; numberOfPlayer++)
-                {
-                    bool restart = MakePlayerStep(numberOfPlayer);
-
-                    if (restart)
-                        return -1;
-
-                    //Проверки на выигрыш (номер победителя; -2 - победителя пока нет)
-                    result = CheckWin(numberOfPlayer);
-                    if (result != -2)
-                        return result;
-                }
-            }
-        }
+//Методы конца игры
 
         //Вывод победителя и выбор дальнейших действий (перезапустить/нет)
-        static bool FinishGame(int result)
+        static string FinishGame(string result)
         {
             Console.WriteLine();
             Console.WriteLine("Игра окончена!");
-            Console.WriteLine("Победитель - " + Players.players[result].Name);
+            Console.WriteLine("Победитель - " + result);
             Console.WriteLine();
 
-            Console.WriteLine("Перезапустить игру? (\"да\" - да \"нет \" - нет)");
-            string answer = Console.ReadLine();
+            while (true)
+            {
+                Console.WriteLine("Перезапустить игру для тех же игроков? (\"да\" - да, \"нет \" - нет (выйти из игры), \"заново\" - начать новую игру и создать новых игроков)");
+                string answer = Console.ReadLine();
 
-            if (answer == "да")
-                return true;
-            else if (answer == "нет")
-                return false;
+                if (answer == "да")
+                    return "restart";
+                else if (answer == "нет")
+                    return "end";
+                else if (answer == "заново")
+                    return "start";
+                else
+                    Console.WriteLine("Возможно, вы ошиблись. Пожалуйста, ответте заново \n"); continue;
+            }
+        }
+
+        //Проверяет возможность разных ошибок и возвращает статус игры (обрабатывает резульат Game())
+        static string CheckErrorsAndGetStatusGameEnd(string result)
+        {
+            if (result == "restart")
+            {
+                Console.WriteLine("Игра перезапускается");
+                MakeIndentation(5);
+                return "restart";
+            }
+            else if (result == "start")
+            {
+                Console.WriteLine("Игра перезапускается");
+                MakeIndentation(5);
+                return "start";
+            }
+            else if (result == "error")
+            {
+                Console.WriteLine("Возникла непредвиденная ошибка. Игра перезапускается");
+                MakeIndentation(5);
+                return "start";
+            }
             else
-                Console.WriteLine("Неверный ответ"); return false;
+            {
+                return "end";
+            }
         }
 
 
-        //ОСНОВНОЙ МЕТОД
-        static void Main(string[] args)
+
+//Вспомогательные методы:
+
+        //Вспомогательный метод, делающий отступ
+        static void MakeIndentation(int indentation)
         {
-            int result = -2;
-            while (true)
+            for (int i = 0; i < indentation; i++)
             {
-                //Начало игры
-                StartGame(result);
-
-                //Возвращает порядковый номер Player в Players, команда на перезапуск (-1), либо одна из ошибок
-                result = Game();
-                var statusGame = CheckErrorsAndGetStatusGameAnd(result);
-                if (!statusGame)
-                    continue;
-
-                //Возвращает возможность рестарта
-                bool restart = FinishGame(result);
-
-                if (!restart)
-                {
-                    MakeIndentation(30);
-                    Console.WriteLine("Конец");
-                    break;
-                }
-                result = -1;
-
-                Console.WriteLine("Нажмите любую клавишу");
-                Console.ReadKey();
+                Console.WriteLine();
             }
-            //Доп инфа в самом конце
-            MakeIndentation(10);
-            Console.WriteLine("Склипал за ночь, рефакторил днём. Ну а тесты пока не сделал, мб когда-нибудь потом добавлю. \n Для выхода нажмите любую клавишу");
-            Console.ReadKey();
+        }
+
+        //Вспомогательный метод, который выводит на экран стилизованную текущую информацию об игре
+        static void PrintGameInformation()
+        {
+            Console.WriteLine();
+            Console.WriteLine("Доска:");
+            Board.PrintBoard();
+            Console.WriteLine();
+            Console.WriteLine();
+        }
+
+        //Вспомогательный метод, который выводит на экран информацию о заданном игроке
+        static void PrintPlayerInformation(int numberOfPlayer)
+        {
+            Console.WriteLine();
+            Console.WriteLine("Ваши костяшки:");
+            Players.players[numberOfPlayer].PrintPlayerBones();
+            Console.WriteLine();
         }
     }
 }

@@ -14,7 +14,7 @@ namespace DominoLib
         {
             for (int i = 0; i < BonesOnBoard.Count; i++)
             {
-                Console.Write("|" + BonesOnBoard[i][0] + "; " + BonesOnBoard[i][1] + "|   ");
+                Console.Write("|" + BonesOnBoard[i][0] + "; " + BonesOnBoard[i][1] + "|");
             }
         }
     }
@@ -46,10 +46,7 @@ namespace DominoLib
         //Пересоздаёт колоду
         public static void RefreshDeck()
         {
-            for (int i = 0; i < Deck.Count; i++)
-            {
-                Deck.Clear();
-            }
+            Deck.Clear();
 
             //Создаётся колода полностью различных int[2] в количестве: (double)((StartCountOfBones^2 + StartCountOfBones) / 2)
             for (int i = 0; i < StartCountOfBones; i++)
@@ -73,7 +70,12 @@ namespace DominoLib
         public void PrintPlayerBones()
         {
             for (int i = 0; i < OnHand.Count; i++)
-                Console.Write((i + 1) + ") " + "|" + OnHand[i][0] + "; " + OnHand[i][1] + "|   ");
+            {
+                if (i < 9)
+                    Console.Write((i + 1) + ")  " + "|" + OnHand[i][0] + "; " + OnHand[i][1] + "|   \n");
+                else
+                    Console.Write((i + 1) + ") " + "|" + OnHand[i][0] + "; " + OnHand[i][1] + "|   \n");
+            }
         }
     }
 

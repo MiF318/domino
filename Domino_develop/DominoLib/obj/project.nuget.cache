@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "bVjCy+f4Ti7i+HrpwsN8ewkEgGTYc07LiZvTU2qLLnoKKH4rxfYVp96O37zBeL40ayqSh9uqZhFqtxFnCF2VLA==",
+  "dgSpecHash": "DQseQqKBj5swjanIlvuOi6XHRMdsYbLP3FK+PimqifW0VcYkOdKL2ftKnTSFFIBHQgy+tD22KbAMv6CfM5joqQ==",
   "success": true,
-  "projectFilePath": "D:\\Алексей\\C-sharp\\Тема 12 - ООП\\Семинарские\\DominoLib\\DominoLib.csproj",
+  "projectFilePath": "D:\\Алексей\\C-sharp\\domino\\Domino_develop\\DominoLib\\DominoLib.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

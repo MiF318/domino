@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Алексей\\C-sharp\\Тема 12 - ООП\\Семинарские\\DominoLib\\DominoLib.csproj": {}
+    "D:\\Алексей\\C-sharp\\domino\\Domino_develop\\DominoLib\\DominoLib.csproj": {}
   },
   "projects": {
-    "D:\\Алексей\\C-sharp\\Тема 12 - ООП\\Семинарские\\DominoLib\\DominoLib.csproj": {
+    "D:\\Алексей\\C-sharp\\domino\\Domino_develop\\DominoLib\\DominoLib.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Алексей\\C-sharp\\Тема 12 - ООП\\Семинарские\\DominoLib\\DominoLib.csproj",
+        "projectUniqueName": "D:\\Алексей\\C-sharp\\domino\\Domino_develop\\DominoLib\\DominoLib.csproj",
         "projectName": "DominoLib",
-        "projectPath": "D:\\Алексей\\C-sharp\\Тема 12 - ООП\\Семинарские\\DominoLib\\DominoLib.csproj",
+        "projectPath": "D:\\Алексей\\C-sharp\\domino\\Domino_develop\\DominoLib\\DominoLib.csproj",
         "packagesPath": "C:\\Users\\ADMIN\\.nuget\\packages\\",
-        "outputPath": "D:\\Алексей\\C-sharp\\Тема 12 - ООП\\Семинарские\\DominoLib\\obj\\",
+        "outputPath": "D:\\Алексей\\C-sharp\\domino\\Domino_develop\\DominoLib\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
