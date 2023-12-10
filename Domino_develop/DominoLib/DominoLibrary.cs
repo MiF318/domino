@@ -71,7 +71,7 @@ namespace DominoLib
         {
             for (int i = 0; i < OnHand.Count; i++)
             {
-                if (i < 9)
+                if (i + 1 < 10)
                     Console.Write((i + 1) + ")  " + "|" + OnHand[i][0] + "; " + OnHand[i][1] + "|   \n");
                 else
                     Console.Write((i + 1) + ") " + "|" + OnHand[i][0] + "; " + OnHand[i][1] + "|   \n");
